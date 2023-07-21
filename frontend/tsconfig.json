@@ -35,11 +35,12 @@
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
     "types": [                                           /* Specify type package names to be included without being referenced in a source file. */
+      "vitest",
       "vite/client",
       "vue/ref-macros",
       "vite-plugin-pages/client",
+      "vite-plugin-vue-component-preview/client",
       "vite-plugin-vue-layouts/client",
-      "element-plus/global",
     ],
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
