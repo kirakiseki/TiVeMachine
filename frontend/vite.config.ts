@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import path from 'node:path'
+import { resolve } from 'path';
 import Pages from 'vite-plugin-pages'
 import Layouts from 'vite-plugin-vue-layouts'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -56,4 +57,17 @@ export default defineConfig({
 
 
   ],
+
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          hack: `true; @import (reference) "${resolve(
+            'src/assets/styles/width.less'
+          )}";`,
+        },
+        javascriptEnabled: true,
+      },
+    },
+  },
 })
