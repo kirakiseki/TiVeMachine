@@ -44,3 +44,9 @@ function go() {
     </div>
   </div>
 </template>
+
+<route lang="yaml">
+name: index
+meta:
+  requiresAuth: false
+</route>

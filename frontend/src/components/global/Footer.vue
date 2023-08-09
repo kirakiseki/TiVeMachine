@@ -1,10 +1,10 @@
-<template>
-    <a-layout-footer class="footer">
-        @2023 TiVeMachine, GitHub Repo: <a href="https://github.com/kirakiseki/TiVeMachine">kirakiseki/TiVeMachine</a>, Powered by Vue3, Vite, Arco Design Pro.
-    </a-layout-footer>
-</template>
-
 <script lang="ts" setup></script>
+
+<template>
+  <a-layout-footer class="footer">
+    @2023 TiVeMachine, <icon-github />: <a href="https://github.com/kirakiseki/TiVeMachine">kirakiseki/TiVeMachine</a>, Powered by Vue3, Vite, Arco Design.
+  </a-layout-footer>
+</template>
 
 <style lang="less" scoped>
 .footer {

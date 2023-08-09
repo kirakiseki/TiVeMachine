@@ -1,22 +1,25 @@
 import { createApp } from 'vue'
 import ArcoVue from '@arco-design/web-vue'
-import ArcoVueIcon from '@arco-design/web-vue/es/icon';
+import ArcoVueIcon from '@arco-design/web-vue/es/icon'
 import '@arco-design/web-vue/dist/arco.css'
-import App from './App.vue'
 import generatedRoutes from 'virtual:generated-pages'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHistory } from 'vue-router'
+import App from './App.vue'
+import setupLoginGuard from './router/setup/loginGuard'
+import setupPermissionGuard from './router/setup/permissonGuard'
+import pinia from './store'
+import '~/api/middleware'
 
-const routes = setupLayouts(generatedRoutes)
+export const routes = setupLayouts(generatedRoutes)
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes:[
-        {
-            path: '/',
-            redirect: '/login'
-        },
-        ...routes
-    ],
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    ...routes,
+  ],
 })
 
-createApp(App).use(router).use(ArcoVue).use(ArcoVueIcon).mount('#app')
+setupLoginGuard(router)
+setupPermissionGuard(router)
+
+createApp(App).use(router).use(ArcoVue).use(ArcoVueIcon).use(pinia).mount('#app')

@@ -1,41 +1,44 @@
-<template>
-    <div class="banner">
-        <div class="banner-inner">
-            <a-carousel class="carousel" animation-name="fade" :auto-play="true">
-                <a-carousel-item v-for="item in carouselItem" :key="item.slogan">
-                    <div :key="item.slogan" class="carousel-item">
-                        <div class="carousel-title">{{ item.slogan }}</div>
-                        <div class="carousel-sub-title">{{ item.subSlogan }}</div>
-                        <img class="carousel-image" :src="item.image" />
-                    </div>
-                </a-carousel-item>
-            </a-carousel>
-        </div>
-    </div>
-</template>
-
 <script lang="ts" setup>
-import bannerImage from '~/assets/images/login-banner.png';
+import bannerImage from '~/assets/images/login-banner.png'
 
 const carouselItem = computed(() => [
-    {
-        slogan: "S1",
-        subSlogan: "Sub1",
-        image: bannerImage,
-    },
-    {
-        slogan: "S2",
-        subSlogan: "Sub2",
-        image: bannerImage,
-    },
-    {
-        slogan: "S3",
-        subSlogan: "Sub3",
-        image: bannerImage,
-    },
-]);
+  {
+    slogan: 'S1',
+    subSlogan: 'Sub1',
+    image: bannerImage,
+  },
+  {
+    slogan: 'S2',
+    subSlogan: 'Sub2',
+    image: bannerImage,
+  },
+  {
+    slogan: 'S3',
+    subSlogan: 'Sub3',
+    image: bannerImage,
+  },
+])
 </script>
 
+<template>
+  <div class="banner">
+    <div class="banner-inner">
+      <a-carousel class="carousel" animation-name="fade" :auto-play="true">
+        <a-carousel-item v-for="item in carouselItem" :key="item.slogan">
+          <div :key="item.slogan" class="carousel-item">
+            <div class="carousel-title">
+              {{ item.slogan }}
+            </div>
+            <div class="carousel-sub-title">
+              {{ item.subSlogan }}
+            </div>
+            <img class="carousel-image" :src="item.image">
+          </div>
+        </a-carousel-item>
+      </a-carousel>
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .banner {
