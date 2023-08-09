@@ -8,6 +8,7 @@ defineOptions({
   <div>
     Index Page
   </div>
+  <Footer />
 </template>
 
 <route lang="yaml">
