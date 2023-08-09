@@ -1,8 +1,8 @@
 {
   "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -18,12 +18,15 @@
     "axios": "^1.4.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.4",
+    "vite-plugin-eslint": "^1.8.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.40.2",
     "@arco-design/web-vue": "^2.49.0",
     "@vitejs/plugin-vue": "^4.2.3",
+    "eslint": "^8.46.0",
     "less": "^4.2.0",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.1",

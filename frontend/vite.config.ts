@@ -1,6 +1,5 @@
+import path, { resolve } from 'node:path'
 import { defineConfig } from 'vite'
-import path from 'node:path'
-import { resolve } from 'path';
 import Pages from 'vite-plugin-pages'
 import Layouts from 'vite-plugin-vue-layouts'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -8,8 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import { unheadVueComposablesImports } from '@unhead/vue'
 import vue from '@vitejs/plugin-vue'
-
-
+import eslint from 'vite-plugin-eslint'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -55,6 +53,11 @@ export default defineConfig({
 
     vue(),
 
+    eslint({
+      cache: false,
+      include: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue'],
+      exclude: ['node_modules'],
+    }),
 
   ],
 
@@ -63,7 +66,7 @@ export default defineConfig({
       less: {
         modifyVars: {
           hack: `true; @import (reference) "${resolve(
-            'src/assets/styles/width.less'
+            'src/assets/styles/width.less',
           )}";`,
         },
         javascriptEnabled: true,
