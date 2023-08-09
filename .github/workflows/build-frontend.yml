@@ -19,6 +19,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v2
       - name: create image from repository
-        run: docker build -t ghcr.io/${{ github.actor }}/<img-name> -f frontend/Dockerfile frontend
+        run: docker build -t ghcr.io/${{ github.actor }}/tivemachine-frontend -f frontend/Dockerfile frontend
       - name: push image to GitHub Container Registry
         run: docker push ghcr.io/${{ github.actor }}/tivemachine-frontend:latest
