@@ -6,7 +6,7 @@ defineOptions({
 
 <template>
   <div>
-    Index Page
+    Index Sample Page
   </div>
   <Footer />
 </template>
