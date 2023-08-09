@@ -1,15 +1,7 @@
-<script setup lang="ts" generic="T extends any, O extends any">
+<script setup lang="ts">
 defineOptions({
   name: 'IndexPage',
 })
-
-const name = ref('')
-
-const router = useRouter()
-function go() {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
-}
 </script>
 
 <template>
