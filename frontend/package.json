@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/axios": "^0.14.0",
     "@types/node": "^20.4.2",
     "@types/nprogress": "^0.2.0",
     "@unhead/vue": "^1.1.32",
