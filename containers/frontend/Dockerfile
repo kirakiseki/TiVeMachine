@@ -2,9 +2,9 @@
 FROM node:16.20.1-alpine3.18 as build
 
 WORKDIR /app
-COPY /frontend/package*.json .
+COPY /workspace/frontend/package*.json .
 RUN npm install
-COPY /frontend/* .
+COPY /workspace/frontend .
 RUN npm run build
 
 # production stage
