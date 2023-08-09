@@ -18,4 +18,5 @@ jobs:
         with:
           image_name: ishirai/tivemachine-frontend
           dockerfile: frontend/Dockerfile
+          context: frontend
           github_token: ${{ secrets.GITHUB_TOKEN }}
