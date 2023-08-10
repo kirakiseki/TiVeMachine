@@ -2,7 +2,7 @@
 
 <template>
   <a-layout-footer class="footer">
-    @2023 TiVeMachine, <icon-github />: <a href="https://github.com/kirakiseki/TiVeMachine">kirakiseki/TiVeMachine</a>, Powered by Vue3, Vite, Arco Design.
+    <span>@2023 TiVeMachine, <icon-github />: <a href="https://github.com/kirakiseki/TiVeMachine">kirakiseki/TiVeMachine</a>, Powered by Vue3, Vite, Arco Design.</span>
   </a-layout-footer>
 </template>
 
