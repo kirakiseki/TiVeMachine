@@ -7,7 +7,9 @@ defineOptions({
 <template>
   <div class="container">
     <a-layout>
-      <a-layout-header>Header</a-layout-header>
+      <a-layout-header>
+        <Navbar />
+      </a-layout-header>
       <a-layout-content>Content</a-layout-content>
       <RouterLink to="/login">
         Login
