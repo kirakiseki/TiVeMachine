@@ -27,6 +27,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ github.actor }}/tivemachine-frontend:latest
+          tags: ghcr.io/${{ github.actor }}/tivemachine-frontend:latest
           context: frontend
           file: frontend/Dockerfile
