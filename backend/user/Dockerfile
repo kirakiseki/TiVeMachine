@@ -9,8 +9,13 @@ COPY . .
 
 RUN go mod tidy
 
-RUN if [ "$TARGETARCH" == "arm64" ]; then CC=aarch64-linux-gnu-gcc && CC_FOR_TARGET=gcc-aarch64-linux-gnu && apt-get update && apt-get install -y gcc-aarch64-linux-gnu; fi && \
-  CGO_ENABLED=1 GOOS=linux GOARCH=$TARGETARCH CC=$CC CC_FOR_TARGET=$CC_FOR_TARGET go build -a -ldflags '-extldflags "-static"' -o /main main.go
+RUN /bin/sh -c 'if [ "$TARGETARCH" = "arm64" ]; then \
+    export CC=aarch64-linux-gnu-gcc && \
+    export CC_FOR_TARGET=gcc-aarch64-linux-gnu && \
+    apt-get update && \
+    apt-get install -y gcc-aarch64-linux-gnu; \
+    fi' && \
+    CGO_ENABLED=1 GOOS=linux GOARCH=$TARGETARCH CC=$CC CC_FOR_TARGET=$CC_FOR_TARGET go build -a -ldflags '-extldflags "-static"' -o /main main.go
 
 # production stage
 FROM alpine as production
