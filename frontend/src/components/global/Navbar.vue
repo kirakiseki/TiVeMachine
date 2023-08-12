@@ -5,6 +5,7 @@ import useUser from '~/hooks/user'
 import logo from '~/assets/images/logo.svg'
 
 const userStore = useUserStore()
+const router = useRouter()
 const { logout } = useUser()
 const avatar = computed(() => {
   return userStore.avatar
@@ -98,7 +99,7 @@ async function switchRoles() {
               </a-space>
             </a-doption>
             <a-doption>
-              <a-space @click="$router.push({ name: 'Info' })">
+              <a-space @click="router.push({ name: 'Info' })">
                 <icon-user />
                 <span>
                   用户中心
@@ -106,7 +107,7 @@ async function switchRoles() {
               </a-space>
             </a-doption>
             <a-doption>
-              <a-space @click="$router.push({ name: 'Setting' })">
+              <a-space @click="router.push({ name: 'Setting' })">
                 <icon-settings />
                 <span>
                   用户设置

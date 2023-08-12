@@ -14,6 +14,7 @@
     height: 40px;
     color: var(--color-text-2);
     text-align: center;
+    background-color: var(--color-bg-2);
 }
 
 .footer a {

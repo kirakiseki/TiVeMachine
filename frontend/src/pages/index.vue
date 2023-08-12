@@ -10,19 +10,24 @@ defineOptions({
       <a-layout-header>
         <Navbar />
       </a-layout-header>
-      <a-layout-content>Content</a-layout-content>
-      <RouterLink to="/login">
+      <a-layout-content>
+        <IndexCarousel />
+        <IndexContentSwitch />
+        <ProgramTimeline />
+        <ProgramListCard />
+      </a-layout-content>
+      <!-- <RouterLink to="/login">
         Login
-      </RouterLink>
+      </RouterLink> -->
       <Footer />
     </a-layout>
   </div>
 </template>
 
 <style scoped>
-.container :deep(.arco-layout-header),
-.container :deep(.arco-layout-footer),
-.container :deep(.arco-layout-content) {
+.container > .arco-layout-header,
+.container > .arco-layout-footer,
+.container > .arco-layout-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
