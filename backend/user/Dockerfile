@@ -1,5 +1,9 @@
 # build stage
+FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
+
 FROM --platform=$BUILDPLATFORM golang:1.20.4-alpine as build
+
+COPY --from=xx / /
 
 WORKDIR /app
 COPY . .
