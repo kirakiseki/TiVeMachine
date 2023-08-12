@@ -16,9 +16,9 @@ defineOptions({
         <ProgramTimeline />
         <ProgramListCard />
       </a-layout-content>
-      <!-- <RouterLink to="/login">
+      <RouterLink to="/login">
         Login
-      </RouterLink> -->
+      </RouterLink>
       <Footer />
     </a-layout>
   </div>
