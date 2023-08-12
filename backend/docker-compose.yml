@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  traefik:
+    image: traefik:v3.0.0-beta3
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "3306:3306"
+    networks:
+      - tivemachine
+    container_name: traefik
+    command: 
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.mysql.address=:3306"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.network=tivemachine"
+      - "--global.sendanonymoususage=false"
+      - "--global.checknewversion=false"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=tivemachine"
+      - "traefik.http.middlewares.gzip.compress=true"
+      - "traefik.http.routers.traefik-dashboard.entrypoints=http"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`gateway.tivemachine.com`)"
+      - "traefik.http.routers.traefik-dashboard.service=dashboard@internal"
+      - "traefik.http.routers.traefik-dashboard-api.entrypoints=http"
+      - "traefik.http.routers.traefik-dashboard-api.rule=Host(`gateway.tivemachine.com`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.traefik-dashboard-api.service=api@internal"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+  
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - tivemachine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=tivemachine"
+      - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"
+      - "traefik.tcp.services.mysql.loadbalancer.server.port=3306"
+      - "traefik.tcp.routers.mysql.entrypoints=mysql"
+
+
+
+networks:
+  tivemachine:
+    driver: bridge
+
+
