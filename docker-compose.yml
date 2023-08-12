@@ -54,7 +54,18 @@ services:
       - "traefik.tcp.services.mysql.loadbalancer.server.port=3306"
       - "traefik.tcp.routers.mysql.entrypoints=mysql"
 
-
+  frontend:
+    image: ghcr.io/kirakiseki/tivemachine-frontend:latest
+    container_name: frontend
+    networks:
+      - tivemachine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=tivemachine"
+      - "traefik.http.routers.frontend.entrypoints=http"
+      - "traefik.http.routers.frontend.rule=Host(`tivemachine.com`)"
+      - "traefik.http.routers.frontend.service=frontend"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
 
 networks:
   tivemachine:
