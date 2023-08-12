@@ -1,21 +1,18 @@
 # build stage
-FROM --platform=$BUILDPLATFORM golang:1.20.4 as build
-
-ARG TARGETARCH
-ENV GO111MODULE=on
+FROM --platform=$BUILDPLATFORM golang:1.20.4-alpine as build
 
 WORKDIR /app
 COPY . .
 
-RUN go mod tidy
+RUN apk add clang lld
+ARG TARGETPLATFORM
+RUN xx-apk add musl-dev gcc
+ENV CGO_ENABLED=1
+ENV GO111MODULE=on
 
-RUN /bin/sh -c 'if [ "$TARGETARCH" = "arm64" ]; then \
-    export CC=aarch64-linux-gnu-gcc && \
-    export CC_FOR_TARGET=gcc-aarch64-linux-gnu && \
-    apt-get update && \
-    apt-get install -y gcc-aarch64-linux-gnu; \
-    fi' && \
-    CGO_ENABLED=1 GOOS=linux GOARCH=$TARGETARCH CC=$CC CC_FOR_TARGET=$CC_FOR_TARGET go build -a -ldflags '-extldflags "-static"' -o /main main.go
+RUN go mod tidy
+RUN xx-go build -o main ./main.go && \
+    xx-verify main
 
 # production stage
 FROM alpine as production
@@ -24,7 +21,7 @@ ENV TZ=Asia/Shanghai
 LABEL maintainer="Ishirai <ishirai@163.com>"
 
 WORKDIR /app
-COPY --from=build /app/main .
+COPY --from=build /app/main ./main
 
 ENV PORT=80\
     DSN=root:root@tcp(traefik:3306)/TiVeMachine?charset=utf8mb4&parseTime=True&loc=Local
