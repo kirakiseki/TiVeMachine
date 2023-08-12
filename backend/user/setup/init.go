@@ -15,7 +15,10 @@ type Instance struct {
 var Inst Instance
 
 func InitDependencies() {
-	Inst.Logger = Zerolog()
 	Inst.GinEngine = Gin()
 	Inst.DB = GOrm()
+}
+
+func InitLogger() {
+	Inst.Logger = Zerolog()
 }

@@ -6,8 +6,9 @@ import (
 )
 
 type config struct {
-	DSN  string
-	Port int
+	DSN       string
+	Port      int
+	JWTSecret string
 }
 
 var Config config
@@ -29,8 +30,15 @@ func LoadConfig() {
 		port = 8080
 	}
 
+	jwtSecret, ok := os.LookupEnv("JWT_SECRET")
+	if !ok {
+		Inst.Logger.Warn().Msg("environment variable JWT_SECRET not set, using default TiVeMachineSecret")
+		jwtSecret = "TiVeMachineSecret"
+	}
+
 	Config = config{
-		DSN:  dsn,
-		Port: port,
+		DSN:       dsn,
+		Port:      port,
+		JWTSecret: jwtSecret,
 	}
 }

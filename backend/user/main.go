@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	setup.InitLogger()
 	setup.LoadConfig()
 	setup.InitDependencies()
 

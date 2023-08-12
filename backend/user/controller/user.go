@@ -19,3 +19,7 @@ func Register(c *gin.Context) {
 func Info(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Info"})
 }
+
+func ChangeAvatar(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "ChangeAvatar"})
+}
