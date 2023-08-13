@@ -1,28 +1,27 @@
 <script setup lang="ts">
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
 import type { ValidatedError } from '@arco-design/web-vue/es/form/interface'
-import useLoading from '~/hooks/loading'
+import { useStorage } from '@vueuse/core'
 import { useUserStore } from '~/store'
+import useLoading from '~/hooks/loading'
 import type { LoginData } from '~/api/modules/user'
 
+const router = useRouter()
+const errorMessage = ref('')
 const { loading, setLoading } = useLoading()
 const userStore = useUserStore()
-const router = useRouter()
-
-const userInfo = reactive({
-  username: '',
-  password: '',
-})
 
 const loginConfig = useStorage('login-config', {
   rememberPassword: true,
-  username: 'admin',
-  password: 'admin',
+  username: 'admin', // 演示默认值
+  password: 'admin', // demo default value
 })
-
-function setRememberPassword(value: boolean) {
-  loginConfig.value.rememberPassword = value
-}
+const userInfo = reactive({
+  username: loginConfig.value.username,
+  password: loginConfig.value.password,
+})
 
 async function handleSubmit({
   errors,
@@ -33,33 +32,27 @@ async function handleSubmit({
 }) {
   if (loading.value)
     return
-
   if (!errors) {
     setLoading(true)
     try {
       await userStore.login(values as LoginData)
-      const { redirect, ...othersQuery } = router.currentRoute.value.query
-      router.push({
-        name: (redirect as string) || 'Workplace',
-        query: {
-          ...othersQuery,
-        },
-      })
+      router.push('/')
       Message.success('登录成功')
       const { rememberPassword } = loginConfig.value
       const { username, password } = values
-
-      // TODO encrypt storage
       loginConfig.value.username = rememberPassword ? username : ''
       loginConfig.value.password = rememberPassword ? password : ''
     }
     catch (err) {
-
+      errorMessage.value = (err as Error).message
     }
     finally {
       setLoading(false)
     }
   }
+}
+function setRememberPassword(value: boolean) {
+  loginConfig.value.rememberPassword = value
 }
 </script>
 
@@ -72,7 +65,7 @@ async function handleSubmit({
       登录 TiVeMachine
     </div>
     <div class="login-form-error-msg">
-      错误信息Placeholder
+      {{ errorMessage }}
     </div>
     <!-- <a-form ref="loginForm" :model="userInfo" class="login-form" layout="vertical" @submit="handleSubmit"> -->
     <a-form :model="userInfo" class="login-form" layout="vertical" @submit="handleSubmit">
@@ -152,4 +145,3 @@ async function handleSubmit({
     }
 }
 </style>
-~/api/modules/user

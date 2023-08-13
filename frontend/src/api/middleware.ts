@@ -16,18 +16,16 @@ if (import.meta.env.VITE_API_BASE_URL)
 
 axios.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // TODO: Authorization
     const token = getToken()
     if (token) {
       if (!config.headers)
         config.headers = {} as AxiosRequestHeaders
 
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = token
     }
     return config
   },
   (error) => {
-    // TODO: Error handling
     return Promise.reject(error)
   },
 )
@@ -36,7 +34,7 @@ axios.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
     const res = response
     // if the custom code is not 20000, it is judged as an error.
-    if (res.data.code !== 20000) {
+    if (res.data.code !== 200) {
       Message.error({
         content: res.data.msg || 'Error',
         duration: 5 * 1000,
@@ -61,7 +59,7 @@ axios.interceptors.response.use(
       }
       return Promise.reject(new Error(res.data.msg || 'Error'))
     }
-    return res
+    return res.data
   },
   (error) => {
     Message.error({
