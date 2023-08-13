@@ -9,8 +9,7 @@ import (
 )
 
 type JWTClaims struct {
-	ID       uint   `json:"id"`
-	Username string `json:"username"`
+	ID uint `json:"id"`
 	jwt.RegisteredClaims
 }
 
@@ -36,7 +35,7 @@ func AuthInceptor() gin.HandlerFunc {
 
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status_code": 50008, "message": "Unauthorized"})
+			c.AbortWithStatusJSON(http.StatusOK, gin.H{"status_code": 50000, "message": "Unauthorized"})
 			return
 		}
 
@@ -46,10 +45,9 @@ func AuthInceptor() gin.HandlerFunc {
 
 		if claims, ok := token.Claims.(*JWTClaims); ok && token.Valid {
 			c.Set("userID", claims.ID)
-			c.Set("username", claims.Username)
 			c.Next()
 		} else {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status_code": 50014, "message": err.Error()})
+			c.AbortWithStatusJSON(http.StatusOK, gin.H{"status_code": 50001, "message": err.Error()})
 			return
 		}
 	}
