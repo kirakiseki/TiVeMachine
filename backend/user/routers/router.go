@@ -4,10 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"user/controller"
+	"user/routers/middleware"
 )
 
 func RegisterRoutes(e *gin.Engine) {
-	e.Use(AuthInceptor())
+	e.Use(middleware.AuthInceptor())
 
 	apiRoutes := e.Group("/api")
 

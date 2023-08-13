@@ -1,9 +1,13 @@
 package setup
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
+	"gorm.io/gorm/logger"
+	"gorm.io/gorm/utils"
 	"net/http"
 	"os"
 	"time"
@@ -22,9 +26,9 @@ const (
 
 func Zerolog() *zerolog.Logger {
 	output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
-	logger := zerolog.New(output).With().Timestamp().Logger()
-	logger.Info().Msg("Initialized zerolog")
-	return &logger
+	zerologLogger := zerolog.New(output).With().Timestamp().Logger()
+	zerologLogger.Info().Msg("Initialized zerolog")
+	return &zerologLogger
 }
 
 func GinLogger() gin.HandlerFunc {
@@ -66,4 +70,97 @@ func GinLogger() gin.HandlerFunc {
 			Dur("latency", latency).
 			Msg(fmt.Sprintf("%s %3d %s%s %-4s %s", statusColor, statusCode, reset, methodColor, method, reset))
 	}
+}
+
+// GORM Logger
+
+type GORMLogger struct {
+	logLevel logger.LogLevel
+}
+
+func (l *GORMLogger) Info(ctx context.Context, s string, i ...interface{}) {
+	if l.logLevel >= logger.Info {
+		Inst.Logger.Info().Msg(fmt.Sprintf(s, i...))
+	}
+}
+
+func (l *GORMLogger) Warn(ctx context.Context, s string, i ...interface{}) {
+	if l.logLevel >= logger.Warn {
+		Inst.Logger.Warn().Msg(fmt.Sprintf(s, i...))
+	}
+}
+
+func (l *GORMLogger) Error(ctx context.Context, s string, i ...interface{}) {
+	if l.logLevel >= logger.Error {
+		Inst.Logger.Error().Msg(fmt.Sprintf(s, i...))
+	}
+}
+
+func (l *GORMLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
+	if l.logLevel <= logger.Silent {
+		return
+	}
+
+	elapsed := time.Since(begin)
+	switch {
+	case err != nil && l.logLevel >= logger.Error && (!errors.Is(err, logger.ErrRecordNotFound)):
+		sql, rows := fc()
+		if rows == -1 {
+			Inst.Logger.Error().
+				Err(err).
+				Dur("elapsed", elapsed).
+				Str("sql", sql).
+				Str("rows", "-").
+				Str("caller", utils.FileWithLineNum()).
+				Msg("GORM")
+		} else {
+			Inst.Logger.Error().
+				Err(err).
+				Dur("elapsed", elapsed).
+				Str("sql", sql).
+				Int64("rows", rows).
+				Str("caller", utils.FileWithLineNum()).
+				Msg("GORM")
+		}
+	case l.logLevel >= logger.Warn:
+		sql, rows := fc()
+		if rows == -1 {
+			Inst.Logger.Warn().
+				Dur("elapsed", elapsed).
+				Str("sql", sql).
+				Str("rows", "-").
+				Str("caller", utils.FileWithLineNum()).
+				Msg("GORM")
+		} else {
+			Inst.Logger.Warn().
+				Dur("elapsed", elapsed).
+				Str("sql", sql).
+				Int64("rows", rows).
+				Str("caller", utils.FileWithLineNum()).
+				Msg("GORM")
+		}
+	case l.logLevel == logger.Info:
+		sql, rows := fc()
+		if rows == -1 {
+			Inst.Logger.Info().
+				Dur("elapsed", elapsed).
+				Str("sql", sql).
+				Str("rows", "-").
+				Str("caller", utils.FileWithLineNum()).
+				Msg("GORM")
+		} else {
+			Inst.Logger.Info().
+				Dur("elapsed", elapsed).
+				Str("sql", sql).
+				Int64("rows", rows).
+				Str("caller", utils.FileWithLineNum()).
+				Msg("GORM")
+		}
+	}
+}
+
+func (l *GORMLogger) LogMode(level logger.LogLevel) logger.Interface {
+	newLogger := *l
+	newLogger.logLevel = level
+	return &newLogger
 }

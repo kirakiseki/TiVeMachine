@@ -6,9 +6,13 @@ import (
 )
 
 type config struct {
-	DSN       string
-	Port      int
-	JWTSecret string
+	DSN           string
+	Port          int
+	JWTSecret     string
+	PasswordSalt  string
+	MinioEndpoint string
+	MinioAK       string
+	MinioSK       string
 }
 
 var Config config
@@ -36,9 +40,37 @@ func LoadConfig() {
 		jwtSecret = "TiVeMachineSecret"
 	}
 
+	passwordSalt, ok := os.LookupEnv("PASSWORD_SALT")
+	if !ok {
+		Inst.Logger.Warn().Msg("environment variable PASSWORD_SALT not set, using default TiVeMachineSecret")
+		passwordSalt = "TiVeMachineSecret"
+	}
+
+	minioEndpoint, ok := os.LookupEnv("MINIO_ENDPOINT")
+	if !ok {
+		Inst.Logger.Warn().Msg("environment variable MINIO_ENDPOINT not set, using default minio:9000")
+		minioEndpoint = "minio:9000"
+	}
+
+	minioAK, ok := os.LookupEnv("MINIO_AK")
+	if !ok {
+		Inst.Logger.Warn().Msg("environment variable MINIO_AK not set, using default tivemachineak")
+		minioAK = "tivemachineak"
+	}
+
+	minioSK, ok := os.LookupEnv("MINIO_SK")
+	if !ok {
+		Inst.Logger.Warn().Msg("environment variable MINIO_SK not set, using default tivemachinesk")
+		minioSK = "tivemachinesk"
+	}
+
 	Config = config{
-		DSN:       dsn,
-		Port:      port,
-		JWTSecret: jwtSecret,
+		DSN:           dsn,
+		Port:          port,
+		JWTSecret:     jwtSecret,
+		PasswordSalt:  passwordSalt,
+		MinioEndpoint: minioEndpoint,
+		MinioAK:       minioAK,
+		MinioSK:       minioSK,
 	}
 }
