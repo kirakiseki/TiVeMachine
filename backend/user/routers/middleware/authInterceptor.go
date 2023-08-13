@@ -15,6 +15,7 @@ type JWTClaims struct {
 
 var authPaths = []string{
 	"/api/user/changeAvatar",
+	"/api/user/info",
 }
 
 func AuthInceptor() gin.HandlerFunc {

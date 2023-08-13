@@ -1,21 +1,19 @@
 package dto
 
 type Response struct {
-	StatusCode int    `json:"status_code"`
-	Message    string `json:"message"`
+	StatusCode int    `json:"code"`
+	Message    string `json:"msg"`
+	Status     string `json:"status"`
+	Data       any    `json:"data"`
 }
 
 type UserRegisterResponse struct {
-	Response
 	UserID uint `json:"user_id"`
 }
 
 type UserLoginResponse struct {
-	UserRegisterResponse
-	Token string `json:"token"`
+	Token  string `json:"token"`
+	UserID uint   `json:"user_id"`
 }
 
-type UserInfoResponse struct {
-	Response
-	UserInfoDTO
-}
+type UserInfoResponse UserDTO

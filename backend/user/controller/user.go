@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 	"user/service/impl"
 	"user/setup"
 )
@@ -14,7 +13,7 @@ var userServiceImpl = impl.UserServiceImpl{}
 func Login(c *gin.Context) {
 	username, password, err := getUsernameAndPassword(c)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"status_code": 50009, "message": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
 		return
 	}
 
@@ -29,7 +28,7 @@ func Login(c *gin.Context) {
 func Register(c *gin.Context) {
 	username, password, err := getUsernameAndPassword(c)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"status_code": 50009, "message": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
 		return
 	}
 
@@ -42,12 +41,7 @@ func Register(c *gin.Context) {
 }
 
 func Info(c *gin.Context) {
-	usedID, err := strconv.Atoi(c.Param("userID"))
-	if err != nil {
-		setup.Inst.Logger.Error().Err(err).Msg("Info")
-	}
-
-	resp, err := userServiceImpl.Info(uint(usedID))
+	resp, err := userServiceImpl.Info(c.GetUint("userID"))
 	if err != nil {
 		setup.Inst.Logger.Error().Err(err).Msg("Info")
 	}
@@ -56,13 +50,23 @@ func Info(c *gin.Context) {
 }
 
 func ChangeAvatar(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "ChangeAvatar"})
+	c.JSON(http.StatusOK, gin.H{"msg": "ChangeAvatar"})
+}
+
+type UserRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func getUsernameAndPassword(c *gin.Context) (string, string, error) {
-	username := c.Query("username")
-	password := c.Query("password")
+	json := UserRequest{}
 
+	err := c.ShouldBindJSON(&json)
+	if err != nil {
+		return "", "", err
+	}
+
+	username, password := json.Username, json.Password
 	if username == "" || password == "" {
 		return "", "", errors.New("用户名或密码不能为空")
 	}
