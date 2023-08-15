@@ -46,8 +46,8 @@ func (s *SubscribeServiceImpl) Subscribe(userID, scheduleID uint) (dto.Response,
 	resp := dto.Response{}
 
 	if dao.HasSubscriptionForScheduleID(userID, scheduleID) {
-		utils.Fail(&resp, 50015, "用户已订阅该节目")
-		return resp, errors.New("用户已订阅该节目")
+		utils.Fail(&resp, 50015, "已订阅该节目")
+		return resp, errors.New("已订阅该节目")
 	}
 
 	err := dao.Subscribe(userID, scheduleID)
@@ -65,8 +65,8 @@ func (s *SubscribeServiceImpl) Unsubscribe(userID, scheduleID uint) (dto.Respons
 	resp := dto.Response{}
 
 	if !dao.HasSubscriptionForScheduleID(userID, scheduleID) {
-		utils.Fail(&resp, 50013, "用户没有订阅该节目")
-		return resp, errors.New("用户没有订阅该节目")
+		utils.Fail(&resp, 50013, "没有订阅该节目")
+		return resp, errors.New("没有订阅该节目")
 	}
 
 	err := dao.Unsubscribe(userID, scheduleID)

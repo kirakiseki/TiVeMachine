@@ -100,7 +100,7 @@ func (u *UserServiceImpl) Info(id uint) (dto.Response, error) {
 
 	user, err := dao.GetUserInfoDTOByID(id)
 	if err != nil {
-		utils.Fail(&resp, 50008, "获取用户信息失败")
+		utils.Fail(&resp, 50008, "获取信息失败")
 		return resp, err
 	}
 
