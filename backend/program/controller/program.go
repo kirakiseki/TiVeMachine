@@ -30,6 +30,15 @@ func ChannelList(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+func ScheduleList(c *gin.Context) {
+	resp, err := scheduleServiceImpl.ScheduleList()
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("ScheduleList")
+	}
+
+	c.JSON(http.StatusOK, resp)
+}
+
 type InfoRequest struct {
 	ProgramID uint `json:"program_id"`
 }

@@ -19,5 +19,5 @@ type UserDTO struct {
 	Avatar      string
 	Description string
 	Sex         uint
-	Password    string
+	Password    string `json:"omitempty"`
 }

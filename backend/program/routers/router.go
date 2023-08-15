@@ -18,6 +18,7 @@ func RegisterRoutes(e *gin.Engine) {
 
 	programRoutes.GET("/list", controller.List)
 	programRoutes.GET("/channelList", controller.ChannelList)
+	programRoutes.GET("/scheduleList", controller.ScheduleList)
 	programRoutes.POST("/info", controller.Info)
 	programRoutes.POST("/channelInfo", controller.ChannelInfo)
 	programRoutes.POST("/scheduleInfo", controller.ScheduleInfo)

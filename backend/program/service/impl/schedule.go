@@ -24,3 +24,20 @@ func (s *ScheduleServiceImpl) ScheduleInfo(scheduleID uint) (dto.Response, error
 	resp.Data = infoResp
 	return resp, nil
 }
+
+func (s *ScheduleServiceImpl) ScheduleList() (dto.Response, error) {
+	resp := dto.Response{}
+
+	list, err := dao.GetScheduleList()
+	if err != nil {
+		utils.Fail(&resp, 50032, "查询失败")
+		return resp, err
+	}
+
+	utils.Success(&resp)
+	listResp := dto.ListResponse{
+		List: list,
+	}
+	resp.Data = listResp
+	return resp, nil
+}

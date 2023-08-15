@@ -18,3 +18,9 @@ func GetScheduleInfo(scheduleID uint) (dto.ScheduleDTO, error) {
 	err := setup.Inst.DB.Model(&SchedulePO{}).Where("id = ?", scheduleID).First(&schedule).Error
 	return schedule, err
 }
+
+func GetScheduleList() ([]uint, error) {
+	var scheduleList []uint
+	err := setup.Inst.DB.Model(&SchedulePO{}).Select("id").Find(&scheduleList).Error
+	return scheduleList, err
+}
