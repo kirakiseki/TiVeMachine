@@ -117,6 +117,41 @@ func (u *UserServiceImpl) Info(id uint) (dto.Response, error) {
 	return resp, nil
 }
 
-func (u *UserServiceImpl) ChangeAvatar(username string, avatar string) (string, error) {
-	return "ChangeAvatar", nil
+func (u *UserServiceImpl) SetAvatar(id uint, avatar string) (dto.Response, error) {
+	resp := dto.Response{}
+
+	err := dao.UpdateUserAvatar(id, avatar)
+	if err != nil {
+		utils.Fail(&resp, 50018, "更新头像失败")
+		return resp, err
+	}
+
+	utils.Success(&resp)
+	return resp, nil
+}
+
+func (u *UserServiceImpl) SetDescription(id uint, description string) (dto.Response, error) {
+	resp := dto.Response{}
+
+	err := dao.UpdateUserDescription(id, description)
+	if err != nil {
+		utils.Fail(&resp, 50017, "更新简介失败")
+		return resp, err
+	}
+
+	utils.Success(&resp)
+	return resp, nil
+}
+
+func (u *UserServiceImpl) SetSex(id, sex uint) (dto.Response, error) {
+	resp := dto.Response{}
+
+	err := dao.UpdateUserSex(id, sex)
+	if err != nil {
+		utils.Fail(&resp, 50016, "更新性别失败")
+		return resp, err
+	}
+
+	utils.Success(&resp)
+	return resp, nil
 }

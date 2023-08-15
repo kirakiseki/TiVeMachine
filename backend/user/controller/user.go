@@ -49,8 +49,50 @@ func Info(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func ChangeAvatar(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"msg": "ChangeAvatar"})
+func SetAvatar(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"msg": "SetAvatar"})
+}
+
+type SetDescriptionRequest struct {
+	Description string `json:"description"`
+}
+
+func SetDescription(c *gin.Context) {
+	var req SetDescriptionRequest
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"code": 50019, "msg": err.Error(), "status": "fail"})
+		return
+	}
+
+	resp, err := userServiceImpl.SetDescription(c.GetUint("userID"), req.Description)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("SetDescription")
+	}
+
+	c.JSON(http.StatusOK, resp)
+}
+
+type SetSexRequest struct {
+	Sex uint `json:"sex"`
+}
+
+func SetSex(c *gin.Context) {
+	var req SetSexRequest
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"code": 50020, "msg": err.Error(), "status": "fail"})
+		return
+	}
+
+	resp, err := userServiceImpl.SetSex(c.GetUint("userID"), req.Sex)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("SetSex")
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
 
 type UserRequest struct {

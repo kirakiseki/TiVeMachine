@@ -14,11 +14,13 @@ type JWTClaims struct {
 }
 
 var authPaths = []string{
-	"/api/user/changeAvatar",
 	"/api/user/info",
+	"/api/user/setDescription",
+	"/api/user/setSex",
+	"/api/user/setAvatar",
 }
 
-func AuthInceptor() gin.HandlerFunc {
+func AuthInterceptor() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		isAuthPath := false
 

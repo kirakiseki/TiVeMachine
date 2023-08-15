@@ -69,3 +69,15 @@ func RegisterUser(user dto.UserDTO) error {
 		UserDTO: user,
 	}).Error
 }
+
+func UpdateUserAvatar(id uint, avatar string) error {
+	return setup.Inst.DB.Model(&UserPO{}).Where("id = ?", id).Update("avatar", avatar).Error
+}
+
+func UpdateUserDescription(id uint, description string) error {
+	return setup.Inst.DB.Model(&UserPO{}).Where("id = ?", id).Update("description", description).Error
+}
+
+func UpdateUserSex(id uint, sex uint) error {
+	return setup.Inst.DB.Model(&UserPO{}).Where("id = ?", id).Update("sex", sex).Error
+}

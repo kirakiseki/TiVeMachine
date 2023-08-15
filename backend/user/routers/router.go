@@ -9,7 +9,7 @@ import (
 )
 
 func RegisterRoutes(e *gin.Engine) {
-	e.Use(middleware.AuthInceptor())
+	e.Use(middleware.AuthInterceptor())
 	e.Use(middleware.CORS())
 	e.Use(cors.Default())
 
@@ -20,7 +20,9 @@ func RegisterRoutes(e *gin.Engine) {
 	userRoutes.POST("/info", controller.Info)
 	userRoutes.POST("/login", controller.Login)
 	userRoutes.POST("/register", controller.Register)
-	userRoutes.POST("/changeAvatar", controller.ChangeAvatar)
+	userRoutes.POST("/setAvatar", controller.SetAvatar)
+	userRoutes.POST("/setDescription", controller.SetDescription)
+	userRoutes.POST("/setSex", controller.SetSex)
 
 	e.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"code": 404, "status": "fail", "msg": "Not found"})
