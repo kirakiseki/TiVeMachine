@@ -143,6 +143,38 @@ services:
       - "traefik.http.routers.backend-user.rule=Host(`tivemachine.com`) && PathPrefix(`/api/user`)"
       - "traefik.http.routers.backend-user.service=backend-user"
       - "traefik.http.services.backend-user.loadbalancer.server.port=80"
+  
+  backend-subscribe:
+    image: ghcr.io/kirakiseki/tivemachine-backend-subscribe:latest
+    container_name: backend-subscribe
+    networks:
+      - tivemachine
+    depends_on:
+      mysql:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=tivemachine"
+      - "traefik.http.routers.backend-subscribe.entrypoints=http"
+      - "traefik.http.routers.backend-subscribe.rule=Host(`tivemachine.com`) && PathPrefix(`/api/subscribe`)"
+      - "traefik.http.routers.backend-subscribe.service=backend-subscribe"
+      - "traefik.http.services.backend-subscribe.loadbalancer.server.port=80"
+  
+  backend-program:
+    image: ghcr.io/kirakiseki/tivemachine-backend-program:latest
+    container_name: backend-program
+    networks:
+      - tivemachine
+    depends_on:
+      mysql:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=tivemachine"
+      - "traefik.http.routers.backend-program.entrypoints=http"
+      - "traefik.http.routers.backend-program.rule=Host(`tivemachine.com`) && PathPrefix(`/api/program`)"
+      - "traefik.http.routers.backend-program.service=backend-program"
+      - "traefik.http.services.backend-program.loadbalancer.server.port=80"
 
 networks:
   tivemachine:
