@@ -1,0 +1,21 @@
+package main
+
+import (
+	"fmt"
+	"subscribe/routers"
+	"subscribe/setup"
+)
+
+func main() {
+	setup.InitLogger()
+	setup.LoadConfig()
+	setup.InitDependencies()
+
+	routers.RegisterRoutes(setup.Inst.GinEngine)
+
+	err := setup.Inst.GinEngine.Run(fmt.Sprintf(":%d", setup.Config.Port))
+
+	if err != nil {
+		setup.Inst.Logger.Fatal().Err(err).Msg("failed to start server")
+	}
+}
