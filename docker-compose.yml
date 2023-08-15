@@ -42,7 +42,13 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+    - MYSQL_ROOT_PASSWORD=root
+    - TZ=Asia/Shanghai
+    - LANG=C.UTF-8
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_general_ci'
+    ]
     volumes:
       - "./mysql:/var/lib/mysql"
       - "./init.sql:/docker-entrypoint-initdb.d/init.sql:ro"
@@ -92,7 +98,7 @@ services:
     image: minio/mc:RELEASE.2021-12-29T06-52-55Z
     container_name: minio-client
     volumes:
-      - "./avatar.jpg:/avatar.jpg"
+      - "./resources/avatar.jpg:/avatar.jpg"
     networks:
       - tivemachine
     depends_on:
