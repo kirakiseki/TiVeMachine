@@ -18,12 +18,13 @@ func RegisterRoutes(e *gin.Engine) {
 
 	programRoutes.GET("/list", controller.List)
 	programRoutes.GET("/channelList", controller.ChannelList)
-	programRoutes.GET("/info", controller.Info)
-	programRoutes.GET("/channelInfo", controller.ChannelInfo)
-	programRoutes.GET("/listByPeriod", controller.ListByPeriod)
-	programRoutes.GET("/listByCategory", controller.ListByCategory)
-	programRoutes.GET("/listByChannel", controller.ListByChannel)
-	programRoutes.GET("/search", controller.Search)
+	programRoutes.POST("/info", controller.Info)
+	programRoutes.POST("/channelInfo", controller.ChannelInfo)
+	programRoutes.POST("/scheduleInfo", controller.ScheduleInfo)
+	programRoutes.POST("/listByPeriod", controller.ListByPeriod)
+	programRoutes.POST("/listByCategory", controller.ListByCategory)
+	programRoutes.POST("/listByChannel", controller.ListByChannel)
+	programRoutes.POST("/search", controller.Search)
 	programRoutes.POST("/addProgram", controller.Add)
 
 	e.NoRoute(func(c *gin.Context) {

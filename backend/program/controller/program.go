@@ -10,6 +10,7 @@ import (
 
 var programServiceImpl = impl.ProgramServiceImpl{}
 var channelServiceImpl = impl.ChannelServiceImpl{}
+var scheduleServiceImpl = impl.ScheduleServiceImpl{}
 
 func List(c *gin.Context) {
 	resp, err := programServiceImpl.List()
@@ -76,6 +77,32 @@ func ChannelInfo(c *gin.Context) {
 	resp, err := channelServiceImpl.Info(req.ChannelID)
 	if err != nil {
 		setup.Inst.Logger.Error().Err(err).Msg("ChannelInfo")
+	}
+
+	c.JSON(http.StatusOK, resp)
+}
+
+type ScheduleInfoRequest struct {
+	ScheduleID uint `json:"schedule_id"`
+}
+
+func ScheduleInfo(c *gin.Context) {
+	var req ScheduleInfoRequest
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("ScheduleInfo")
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
+		return
+	}
+	if req.ScheduleID == 0 {
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": "schedule_id 不能为空", "status": "fail"})
+		return
+	}
+
+	resp, err := scheduleServiceImpl.ScheduleInfo(req.ScheduleID)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("ScheduleInfo")
 	}
 
 	c.JSON(http.StatusOK, resp)

@@ -18,3 +18,7 @@ type ProgramInfoResponse struct {
 type ChannelInfoResponse struct {
 	Info ChannelDTO `json:"info"`
 }
+
+type ScheduleInfoResponse struct {
+	Info ScheduleDTO `json:"info"`
+}
