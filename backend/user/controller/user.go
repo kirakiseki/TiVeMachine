@@ -50,8 +50,25 @@ func Info(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+type SetAvatarRequest struct {
+	Avatar string `json:"avatar"`
+}
+
 func SetAvatar(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"msg": "SetAvatar"})
+	var req SetAvatarRequest
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"code": 50019, "msg": err.Error(), "status": "fail"})
+		return
+	}
+
+	resp, err := userServiceImpl.SetAvatar(c.GetUint("userID"), req.Avatar)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("SetAvatar")
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
 
 type SetDescriptionRequest struct {
