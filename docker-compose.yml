@@ -98,7 +98,7 @@ services:
     image: minio/mc:RELEASE.2021-12-29T06-52-55Z
     container_name: minio-client
     volumes:
-      - "./resources/avatar.jpg:/avatar.jpg"
+      - "./resources:/resources"
     networks:
       - tivemachine
     depends_on:
@@ -111,7 +111,7 @@ services:
       /usr/bin/mc policy set public minioS3/avatar;
       /usr/bin/mc mb minioS3/cover;
       /usr/bin/mc policy set public minioS3/cover;
-      /usr/bin/mc cp /avatar.jpg minioS3/avatar/avatar.jpg;
+      /usr/bin/mc cp --recursive /resources/ minioS3/avatar/;
       exit 0;
       "
 
