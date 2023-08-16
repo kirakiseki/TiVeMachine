@@ -185,7 +185,7 @@ func (u *UserServiceImpl) Upload(file *multipart.FileHeader, bucketName string) 
 		return resp, err
 	}
 
-	url, err := utils.GetFileURL("avatar", fileName)
+	url, err := utils.GetFileURL(bucketName, fileName)
 	if err != nil {
 		utils.Fail(&resp, 50020, "获取文件URL失败")
 		return resp, err
@@ -197,6 +197,6 @@ func (u *UserServiceImpl) Upload(file *multipart.FileHeader, bucketName string) 
 	}
 	resp.Data = uploadResp
 
-	setup.Inst.Logger.Info().Str("url", uploadResp.Url).Msg("UploadAvatar")
+	setup.Inst.Logger.Info().Str("url", uploadResp.Url).Msg("Upload")
 	return resp, nil
 }
