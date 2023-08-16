@@ -17,3 +17,7 @@ type UserLoginResponse struct {
 }
 
 type UserInfoResponse UserDTO
+
+type UploadResponse struct {
+	Url string `json:"url"`
+}

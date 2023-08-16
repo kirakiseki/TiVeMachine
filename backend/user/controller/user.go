@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	"mime/multipart"
 	"net/http"
 	"user/service/impl"
 	"user/setup"
@@ -114,4 +115,40 @@ func getUsernameAndPassword(c *gin.Context) (string, string, error) {
 	}
 
 	return username, password, nil
+}
+
+func UploadAvatar(c *gin.Context) {
+	data, err := getFile(c)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
+		return
+	}
+
+	resp, err := userServiceImpl.Upload(data, "avatar")
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("UploadAvatar")
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+func UploadCover(c *gin.Context) {
+	data, err := getFile(c)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
+		return
+	}
+
+	resp, err := userServiceImpl.Upload(data, "cover")
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("UploadCover")
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+func getFile(c *gin.Context) (*multipart.FileHeader, error) {
+	data, err := c.FormFile("file")
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }

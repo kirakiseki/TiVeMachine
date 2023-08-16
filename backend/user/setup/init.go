@@ -13,7 +13,7 @@ type Instance struct {
 	GinEngine    *gin.Engine
 	DB           *gorm.DB
 	MinioClient  *minio.Client
-	MinioContext *context.Context
+	MinioContext context.Context
 }
 
 var Inst Instance

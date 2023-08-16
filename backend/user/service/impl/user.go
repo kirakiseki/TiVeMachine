@@ -3,6 +3,9 @@ package impl
 import (
 	"errors"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
+	"mime/multipart"
+	"strings"
 	"time"
 	"user/dao"
 	"user/model/dto"
@@ -153,5 +156,47 @@ func (u *UserServiceImpl) SetSex(id, sex uint) (dto.Response, error) {
 	}
 
 	utils.Success(&resp)
+	return resp, nil
+}
+
+func (u *UserServiceImpl) Upload(file *multipart.FileHeader, bucketName string) (dto.Response, error) {
+	resp := dto.Response{}
+
+	f, err := file.Open()
+	if err != nil {
+		utils.Fail(&resp, 50018, "打开文件失败")
+		return resp, err
+	}
+
+	defer func(file multipart.File) {
+		err := file.Close()
+		if err != nil {
+			setup.Inst.Logger.Error().Err(err).Msg("UploadAvatar")
+		}
+	}(f)
+
+	UUID := uuid.NewString()
+	extensionName := strings.Split(file.Filename, ".")[1]
+	fileName := UUID + "." + extensionName
+
+	err = utils.UploadFile(bucketName, fileName, f, file.Size)
+	if err != nil {
+		utils.Fail(&resp, 50019, "上传文件失败")
+		return resp, err
+	}
+
+	url, err := utils.GetFileURL("avatar", fileName)
+	if err != nil {
+		utils.Fail(&resp, 50020, "获取文件URL失败")
+		return resp, err
+	}
+
+	utils.Success(&resp)
+	uploadResp := dto.UploadResponse{
+		Url: strings.Split(url.String(), "?")[0],
+	}
+	resp.Data = uploadResp
+
+	setup.Inst.Logger.Info().Str("url", uploadResp.Url).Msg("UploadAvatar")
 	return resp, nil
 }

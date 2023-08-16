@@ -6,7 +6,7 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
 
-func Minio() (*minio.Client, *context.Context) {
+func Minio() (*minio.Client, context.Context) {
 	MCtx := context.Background()
 
 	MClient, err := minio.New(Config.MinioEndpoint, &minio.Options{
@@ -17,5 +17,5 @@ func Minio() (*minio.Client, *context.Context) {
 	}
 
 	Inst.Logger.Info().Msg("Initialized minio")
-	return MClient, &MCtx
+	return MClient, MCtx
 }

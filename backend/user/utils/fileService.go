@@ -8,24 +8,22 @@ import (
 	"user/setup"
 )
 
-func UploadFile(bucketName, objectName string, reader io.Reader, objectSize int64) error {
-	updInfo, err := setup.Inst.MinioClient.PutObject(*setup.Inst.MinioContext, bucketName, objectName, reader, objectSize, minio.PutObjectOptions{
+func UploadFile(bucketName string, objectName string, reader io.Reader, objectsize int64) error {
+	file, err := setup.Inst.MinioClient.PutObject(setup.Inst.MinioContext, bucketName, objectName, reader, objectsize, minio.PutObjectOptions{
 		ContentType: "application/octet-stream",
 	})
-
 	if err != nil {
 		setup.Inst.Logger.Error().Err(err).Msg("failed to upload file")
 		return err
 	}
-
-	setup.Inst.Logger.Info().Msgf("Successfully uploaded file %s of size %d", updInfo.Key, updInfo.Size)
+	setup.Inst.Logger.Info().Str("bucketName", bucketName).Str("objectName", objectName).Int64("size", file.Size).Msg("Uploaded file")
 	return nil
 }
 
 func GetFileURL(bucketName, objectName string) (*url.URL, error) {
 	reqParams := make(url.Values)
 
-	preSignedURL, err := setup.Inst.MinioClient.PresignedGetObject(*setup.Inst.MinioContext, bucketName, objectName, time.Hour*24, reqParams)
+	preSignedURL, err := setup.Inst.MinioClient.PresignedGetObject(setup.Inst.MinioContext, bucketName, objectName, time.Hour*24, reqParams)
 	if err != nil {
 		setup.Inst.Logger.Error().Err(err).Msg("failed to get file preSigned url")
 		return nil, err

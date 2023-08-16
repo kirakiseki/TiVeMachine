@@ -23,6 +23,8 @@ func RegisterRoutes(e *gin.Engine) {
 	userRoutes.POST("/setAvatar", controller.SetAvatar)
 	userRoutes.POST("/setDescription", controller.SetDescription)
 	userRoutes.POST("/setSex", controller.SetSex)
+	userRoutes.POST("/uploadAvatar", controller.UploadAvatar)
+	userRoutes.POST("/uploadCover", controller.UploadCover)
 
 	e.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"code": 404, "status": "fail", "msg": "Not found"})
