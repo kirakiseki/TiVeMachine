@@ -44,6 +44,7 @@ async function handleSubscribeBtn(scheduleID: number) {
   }
 
   console.log(parseTimeStr(alarmTime.value))
+  Notification.requestPermission()
   subscribe.addSubscribe(scheduleID, parseTimeStr(alarmTime.value).getTime())
   subList.value.push(scheduleID)
 }
@@ -51,7 +52,7 @@ async function handleSubscribeBtn(scheduleID: number) {
 
 <template>
   <div class="scheduleCard">
-    <a-card :style="{ width: '30%' }" :title="schedule.program">
+    <a-card :style="{ width: '70%' }" :title="schedule.program">
       <template #extra>
         <a-button v-if="schedule.start_time < nowSeconds" type="outline" disabled>
           已过期

@@ -32,7 +32,7 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
-  (response: AxiosResponse<HttpResponse>) => {
+  (response: AxiosResponse<HttpResponse>): any => {
     const res = response
     if (res.data.code !== 200) {
       Message.error({
