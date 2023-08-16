@@ -12,8 +12,9 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `avatar` varchar(255) DEFAULT NULL,
   `description` varchar(1024) DEFAULT NULL,
-  `sex` int(1) DEFAULT NULL,
-  CONSTRAINT `sex` CHECK (`sex` IN (0, 1))
+  `sex` int(1) DEFAULT 0,
+  CONSTRAINT `sex` CHECK (`sex` IN (0, 1)),
+  INDEX `idx_user` (`id` ASC)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 CREATE TABLE `program` (
@@ -22,31 +23,37 @@ CREATE TABLE `program` (
   `description` varchar(1024) DEFAULT NULL,
   `cover` varchar(255) DEFAULT NULL,
   `category` varchar(255) DEFAULT NULL
+  INDEX `idx_program` (`id` ASC)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 CREATE TABLE `channel` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(1024) DEFAULT NULL,
-  `cover` varchar(255) DEFAULT NULL
+  `cover` varchar(255) DEFAULT NULL,
+  INDEX `idx_channel` (`id` ASC)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 CREATE TABLE schedule (
-  id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  program_id int(11) NOT NULL,
-  channel_id int(11) NOT NULL,
-  start_time bigint(20) NOT NULL,
-  end_time bigint(20) NOT NULL,
-  FOREIGN KEY (program_id) REFERENCES program(id),
-  FOREIGN KEY (channel_id) REFERENCES channel(id)
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `program_id` int(11) NOT NULL,
+  `channel_id` int(11) NOT NULL,
+  `start_time` bigint(20) NOT NULL,
+  `end_time` bigint(20) NOT NULL,
+  FOREIGN KEY (program_id) REFERENCES program(id) ON DELETE CASCADE,
+  FOREIGN KEY (channel_id) REFERENCES channel(id) ON DELETE CASCADE,
+  CONSTRAINT `start_time` CHECK (`start_time` < `end_time`)
+  INDEX `idx_schedule` (`id` ASC)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 CREATE TABLE `subscription` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `schedule_id` int(11) NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES user(id),
-  FOREIGN KEY (schedule_id) REFERENCES schedule(id)
+  `alert_time` bigint(20) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+  FOREIGN KEY (schedule_id) REFERENCES schedule(id) ON DELETE CASCADE
+  INDEX `idx_subscription` (`id` ASC)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 -- 3 data
