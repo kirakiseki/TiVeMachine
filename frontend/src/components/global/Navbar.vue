@@ -13,15 +13,6 @@ const { logout } = useUser()
 const avatar = computed(() => {
   return userStore.Avatar
 })
-const refBtn = ref()
-function setPopoverVisible() {
-  const event = new MouseEvent('click', {
-    view: window,
-    bubbles: true,
-    cancelable: true,
-  })
-  refBtn.value.dispatchEvent(event)
-}
 function handleLogout() {
   logout()
 }
