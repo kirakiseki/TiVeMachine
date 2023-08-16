@@ -18,6 +18,7 @@ func RegisterRoutes(e *gin.Engine) {
 	subscribeRoutes := apiRoutes.Group("/subscribe")
 
 	subscribeRoutes.GET("/subscriptionList", controller.SubscriptionList)
+	subscribeRoutes.POST("/subscriptionInfo", controller.SubscriptionInfo)
 	subscribeRoutes.POST("/subscribe", controller.Subscribe)
 	subscribeRoutes.POST("/unsubscribe", controller.Unsubscribe)
 

@@ -10,3 +10,7 @@ type Response struct {
 type SubscriptionListResponse struct {
 	SubscriptionList []uint `json:"subscription_list"`
 }
+
+type SubscriptionInfoResponse struct {
+	Info SubscribeDTO `json:"info"`
+}

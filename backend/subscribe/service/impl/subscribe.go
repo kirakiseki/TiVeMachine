@@ -79,3 +79,20 @@ func (s *SubscribeServiceImpl) Unsubscribe(userID, scheduleID uint) (dto.Respons
 
 	return resp, nil
 }
+
+func (s *SubscribeServiceImpl) SubscriptionInfo(subscribeID uint) (dto.Response, error) {
+	resp := dto.Response{}
+
+	info, err := dao.GetSubscriptionInfo(subscribeID)
+	if err != nil {
+		utils.Fail(&resp, 50010, "查询失败")
+		return resp, err
+	}
+
+	utils.Success(&resp)
+	infoResp := dto.SubscriptionInfoResponse{
+		Info: info,
+	}
+	resp.Data = infoResp
+	return resp, nil
+}

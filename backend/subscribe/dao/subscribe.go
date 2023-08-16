@@ -44,3 +44,9 @@ func Subscribe(userID, scheduleID, alertTime uint) error {
 func Unsubscribe(userID, scheduleID uint) error {
 	return setup.Inst.DB.Model(&SubscribePO{}).Where("user_id = ? AND schedule_id = ?", userID, scheduleID).Delete(&SubscribePO{}).Error
 }
+
+func GetSubscriptionInfo(subscribeID uint) (dto.SubscribeDTO, error) {
+	var subscription dto.SubscribeDTO
+	err := setup.Inst.DB.Model(&SubscribePO{}).Where("id = ?", subscribeID).Find(&subscription).Error
+	return subscription, err
+}

@@ -19,6 +19,30 @@ func SubscriptionList(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+type SubscriptionInfoRequest struct {
+	SubscribeID uint `json:"subscribe_id"`
+}
+
+func SubscriptionInfo(c *gin.Context) {
+	var req SubscriptionInfoRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
+		return
+	}
+	if req.SubscribeID == 0 {
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": "schedule_id 不能为空", "status": "fail"})
+		return
+	}
+
+	resp, err := subscribeServiceImpl.SubscriptionInfo(req.SubscribeID)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("SubscriptionInfo")
+	}
+
+	c.JSON(http.StatusOK, resp)
+}
+
 func Subscribe(c *gin.Context) {
 	scheduleID, alarmTime, err := getScheduleID(c)
 	if err != nil {
