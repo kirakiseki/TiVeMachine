@@ -20,13 +20,13 @@ func SubscriptionList(c *gin.Context) {
 }
 
 func Subscribe(c *gin.Context) {
-	scheduleID, err := getScheduleID(c)
+	scheduleID, alarmTime, err := getScheduleID(c)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
 		return
 	}
 
-	resp, err := subscribeServiceImpl.Subscribe(c.GetUint("userID"), scheduleID)
+	resp, err := subscribeServiceImpl.Subscribe(c.GetUint("userID"), scheduleID, alarmTime)
 	if err != nil {
 		setup.Inst.Logger.Error().Err(err).Msg("Subscribe")
 	}
@@ -35,7 +35,7 @@ func Subscribe(c *gin.Context) {
 }
 
 func Unsubscribe(c *gin.Context) {
-	scheduleID, err := getScheduleID(c)
+	scheduleID, _, err := getScheduleID(c)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
 		return
@@ -51,19 +51,20 @@ func Unsubscribe(c *gin.Context) {
 
 type SubscribeRequest struct {
 	ScheduleID uint `json:"schedule_id"`
+	AlarmTime  uint `json:"alarm_time,omitempty"`
 }
 
-func getScheduleID(c *gin.Context) (uint, error) {
+func getScheduleID(c *gin.Context) (uint, uint, error) {
 	var req SubscribeRequest
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 
 	if req.ScheduleID == 0 {
-		return 0, errors.New("schedule_id is required")
+		return 0, 0, errors.New("schedule_id is required")
 	}
 
-	return req.ScheduleID, nil
+	return req.ScheduleID, req.AlarmTime, nil
 }

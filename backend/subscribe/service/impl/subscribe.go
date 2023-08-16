@@ -42,7 +42,7 @@ func (s *SubscribeServiceImpl) SubscriptionList(userID uint) (dto.Response, erro
 	return resp, nil
 }
 
-func (s *SubscribeServiceImpl) Subscribe(userID, scheduleID uint) (dto.Response, error) {
+func (s *SubscribeServiceImpl) Subscribe(userID, scheduleID, alarmTime uint) (dto.Response, error) {
 	resp := dto.Response{}
 
 	if dao.HasSubscriptionForScheduleID(userID, scheduleID) {
@@ -50,7 +50,7 @@ func (s *SubscribeServiceImpl) Subscribe(userID, scheduleID uint) (dto.Response,
 		return resp, errors.New("已订阅该节目")
 	}
 
-	err := dao.Subscribe(userID, scheduleID)
+	err := dao.Subscribe(userID, scheduleID, alarmTime)
 	if err != nil {
 		utils.Fail(&resp, 50012, "订阅失败")
 		return resp, err

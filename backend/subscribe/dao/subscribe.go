@@ -31,11 +31,12 @@ func HasSubscriptionForScheduleID(userID, scheduleID uint) bool {
 	return count > 0
 }
 
-func Subscribe(userID, scheduleID uint) error {
+func Subscribe(userID, scheduleID, alertTime uint) error {
 	return setup.Inst.DB.Model(&SubscribePO{}).Create(&SubscribePO{
 		SubscribeDTO: dto.SubscribeDTO{
 			UserID:     userID,
 			ScheduleID: scheduleID,
+			AlertTime:  alertTime,
 		},
 	}).Error
 }
