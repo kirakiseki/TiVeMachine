@@ -4,6 +4,7 @@ import (
 	"github.com/minio/minio-go/v7"
 	"io"
 	"net/url"
+	"strings"
 	"time"
 	"user/setup"
 )
@@ -28,6 +29,7 @@ func GetFileURL(bucketName, objectName string) (*url.URL, error) {
 		setup.Inst.Logger.Error().Err(err).Msg("failed to get file preSigned url")
 		return nil, err
 	}
+	preSignedURL.Host = strings.Replace(preSignedURL.Host, "minio:9000", "s3.tivemachine.com", 1)
 
 	return preSignedURL, nil
 }
