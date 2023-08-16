@@ -130,3 +130,21 @@ func (p *ProgramServiceImpl) Add(program dto.ProgramDTO) (dto.Response, error) {
 	utils.Success(&resp)
 	return resp, nil
 }
+
+func (p *ProgramServiceImpl) Delete(programID uint) (dto.Response, error) {
+	resp := dto.Response{}
+
+	if !dao.HasProgramByID(programID) {
+		utils.Fail(&resp, 50030, "节目不存在")
+		return resp, errors.New("节目不存在")
+	}
+
+	err := dao.DeleteProgram(programID)
+	if err != nil {
+		utils.Fail(&resp, 50031, "删除节目失败")
+		return resp, err
+	}
+
+	utils.Success(&resp)
+	return resp, nil
+}

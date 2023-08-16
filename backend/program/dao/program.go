@@ -66,3 +66,7 @@ func AddProgram(program dto.ProgramDTO) error {
 		ProgramDTO: program,
 	}).Error
 }
+
+func DeleteProgram(programID uint) error {
+	return setup.Inst.DB.Model(&ProgramPO{}).Where("id = ?", programID).Delete(&ProgramPO{}).Error
+}

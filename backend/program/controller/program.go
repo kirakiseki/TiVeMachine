@@ -227,3 +227,29 @@ func Add(c *gin.Context) {
 
 	c.JSON(http.StatusOK, resp)
 }
+
+type DeleteRequest struct {
+	ProgramID uint `json:"program_id"`
+}
+
+func Delete(c *gin.Context) {
+	var req DeleteRequest
+
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("Delete")
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": err.Error(), "status": "fail"})
+		return
+	}
+	if req.ProgramID == 0 {
+		c.JSON(http.StatusOK, gin.H{"code": 50009, "msg": "program_id 不能为空", "status": "fail"})
+		return
+	}
+
+	resp, err := programServiceImpl.Delete(req.ProgramID)
+	if err != nil {
+		setup.Inst.Logger.Error().Err(err).Msg("Delete")
+	}
+
+	c.JSON(http.StatusOK, resp)
+}

@@ -10,6 +10,7 @@ type ProgramService interface {
 	Info(uint) (dto.Response, error)
 	Search(string) (dto.Response, error)
 	Add(dto.ProgramDTO) (dto.Response, error)
+	Delete(uint) (dto.Response, error)
 
 	/* 以下需要鉴权 */
 }

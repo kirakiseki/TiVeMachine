@@ -27,6 +27,7 @@ func RegisterRoutes(e *gin.Engine) {
 	programRoutes.POST("/listByChannel", controller.ListByChannel)
 	programRoutes.POST("/search", controller.Search)
 	programRoutes.POST("/addProgram", controller.Add)
+	programRoutes.POST("/deleteProgram", controller.Delete)
 
 	e.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"code": 404, "status": "fail", "msg": "Not found"})
