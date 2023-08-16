@@ -2,6 +2,7 @@ import { useRouter } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
 
 import { useUserStore } from '~/store'
+import { setAvatar, setDescription, setSex } from '~/api/modules/user'
 
 export default function useUser() {
   const router = useRouter()
@@ -18,7 +19,23 @@ export default function useUser() {
       },
     })
   }
+  const updateSex = async (data: number) => {
+    await setSex({ sex: data })
+    await userStore.info()
+  }
+  const updateAvatar = async (data: string) => {
+    console.log(data)
+    await setAvatar({ avatar: data })
+    await userStore.info()
+  }
+  const updateDescription = async (data: string) => {
+    await setDescription({ description: data })
+    await userStore.info()
+  }
   return {
     logout,
+    updateSex,
+    updateAvatar,
+    updateDescription,
   }
 }

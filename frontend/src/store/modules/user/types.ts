@@ -1,7 +1,7 @@
 export interface UserState {
-  id: number
-  username: string
-  avatar?: string
-  description?: string
-  sex?: number
+  ID: number
+  Username: string
+  Avatar?: string
+  Description?: string
+  Sex?: number
 }

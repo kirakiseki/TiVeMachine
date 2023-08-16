@@ -5,17 +5,16 @@ import type { LoginData } from '~/api/modules/user'
 import {
   getUserInfo,
   login as userLogin,
-  logout as userLogout,
 } from '~/api/modules/user'
 import { clearToken, setToken } from '~/utils/auth'
 
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
-    id: 0,
-    username: '',
-    avatar: '',
-    description: '',
-    sex: 0,
+    ID: 0,
+    Username: '',
+    Avatar: '',
+    Description: '',
+    Sex: 0,
   }),
 
   getters: {
@@ -38,6 +37,11 @@ const useUserStore = defineStore('user', {
     // Get user's information
     async info() {
       const res = await getUserInfo()
+      if (res.data.Avatar === '')
+        res.data.Avatar = 'http://s3.tivemachine.com/avatar/avatar.jpg'
+      if (res.data.Description === '')
+        res.data.Description = '这个人很懒，什么都没有留下'
+
       this.setInfo(res.data)
     },
 
@@ -61,7 +65,7 @@ const useUserStore = defineStore('user', {
     // Logout
     async logout() {
       try {
-        await userLogout()
+        // await userLogout()
       }
       finally {
         this.logoutCallBack()

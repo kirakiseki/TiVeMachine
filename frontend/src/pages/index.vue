@@ -12,13 +12,27 @@ defineOptions({
       </a-layout-header>
       <a-layout-content>
         <IndexCarousel />
-        <IndexContentSwitch />
-        <ProgramTimeline />
-        <ProgramListCard />
+        <a-typography-title :heading="3" class="title">
+          频道列表
+        </a-typography-title>
+        <a-divider :size="12" style="border-bottom-style: dotted" />
+        <Suspense>
+          <ChannelListCard />
+          <template #fallback>
+            <a-spin spinning />
+          </template>
+        </Suspense>
+        <a-typography-title :heading="3" class="title">
+          节目列表
+        </a-typography-title>
+        <a-divider :size="12" style="border-bottom-style: dotted" />
+        <Suspense>
+          <ProgramListCard />
+          <template #fallback>
+            <a-spin spinning />
+          </template>
+        </Suspense>
       </a-layout-content>
-      <RouterLink to="/login">
-        Login
-      </RouterLink>
       <Footer />
     </a-layout>
   </div>
@@ -33,6 +47,13 @@ defineOptions({
   justify-content: center;
   font-stretch: condensed;
   text-align: center;
+}
+
+.title {
+  margin-left: 20px;
+}
+.container {
+  background-color: var(--color-fill-2);
 }
 </style>
 

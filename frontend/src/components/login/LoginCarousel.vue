@@ -1,21 +1,19 @@
 <script lang="ts" setup>
-import bannerImage from '~/assets/images/login-banner.png'
-
 const carouselItem = computed(() => [
   {
-    slogan: 'S1',
-    subSlogan: 'Sub1',
-    image: bannerImage,
+    slogan: '频道覆盖更广',
+    subSlogan: '',
+    image: 'http://s3.tivemachine.com/avatar/channel.png',
   },
   {
-    slogan: 'S2',
-    subSlogan: 'Sub2',
-    image: bannerImage,
+    slogan: '节目种类更多',
+    subSlogan: '',
+    image: 'http://s3.tivemachine.com/avatar/program.png',
   },
   {
-    slogan: 'S3',
-    subSlogan: 'Sub3',
-    image: bannerImage,
+    slogan: '播出时刻更准',
+    subSlogan: '',
+    image: 'http://s3.tivemachine.com/avatar/schedule.png',
   },
 ])
 </script>

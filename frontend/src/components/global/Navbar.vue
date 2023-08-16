@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-import { Message } from '@arco-design/web-vue'
 import { useUserStore } from '~/store'
 import useUser from '~/hooks/user'
 import logo from '~/assets/images/logo.svg'
+import { isLogin } from '~/utils/auth'
 
+defineProps<{
+  off?: boolean
+}>()
 const userStore = useUserStore()
 const router = useRouter()
 const { logout } = useUser()
 const avatar = computed(() => {
-  return userStore.avatar
+  return userStore.Avatar
 })
 const refBtn = ref()
 function setPopoverVisible() {
@@ -22,10 +25,6 @@ function setPopoverVisible() {
 function handleLogout() {
   logout()
 }
-async function switchRoles() {
-  const res = await userStore.switchRoles()
-  Message.success(res as string)
-}
 </script>
 
 <template>
@@ -33,10 +32,12 @@ async function switchRoles() {
     <div class="left-side">
       <a-space>
         <img
+          v-if="!off"
           alt="logo"
           :src="logo"
         >
         <a-typography-title
+          v-if="!off"
           :style="{ margin: 0, fontSize: '18px' }"
           :heading="5"
         >
@@ -45,43 +46,7 @@ async function switchRoles() {
       </a-space>
     </div>
     <ul class="right-side">
-      <li>
-        <a-tooltip content="搜索">
-          <a-button class="nav-btn" type="outline" shape="circle">
-            <template #icon>
-              <icon-search />
-            </template>
-          </a-button>
-        </a-tooltip>
-      </li>
-      <li>
-        <a-tooltip content="消息通知">
-          <div class="message-box-trigger">
-            <a-badge :count="9" dot>
-              <a-button
-                class="nav-btn"
-                type="outline"
-                shape="circle"
-                @click="setPopoverVisible"
-              >
-                <icon-notification />
-              </a-button>
-            </a-badge>
-          </div>
-        </a-tooltip>
-        <a-popover
-          trigger="click"
-          :arrow-style="{ display: 'none' }"
-          :content-style="{ padding: 0, minWidth: '400px' }"
-          content-class="message-popover"
-        >
-          <div ref="refBtn" class="ref-btn" />
-          <template #content>
-            <!-- <MessageBox /> -->
-          </template>
-        </a-popover>
-      </li>
-      <li>
+      <li v-if="isLogin()">
         <a-dropdown trigger="click">
           <a-avatar
             :size="32"
@@ -91,23 +56,15 @@ async function switchRoles() {
           </a-avatar>
           <template #content>
             <a-doption>
-              <a-space @click="switchRoles">
-                <icon-tag />
-                <span>
-                  切换角色
-                </span>
-              </a-space>
-            </a-doption>
-            <a-doption>
-              <a-space @click="router.push({ name: 'Info' })">
+              <a-space @click="router.push({ name: 'Workplace' })">
                 <icon-user />
                 <span>
-                  用户中心
+                  节目中心
                 </span>
               </a-space>
             </a-doption>
             <a-doption>
-              <a-space @click="router.push({ name: 'Setting' })">
+              <a-space @click="router.push({ name: 'User' })">
                 <icon-settings />
                 <span>
                   用户设置
@@ -124,6 +81,11 @@ async function switchRoles() {
             </a-doption>
           </template>
         </a-dropdown>
+      </li>
+      <li v-else>
+        <a-button type="primary" @click="() => { router.push('/login') }">
+          登录
+        </a-button>
       </li>
     </ul>
   </div>

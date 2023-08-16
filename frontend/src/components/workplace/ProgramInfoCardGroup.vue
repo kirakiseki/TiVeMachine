@@ -7,8 +7,8 @@ const programList = await program.fetchProgramList()
 
 function programRows(programList: Array<Program>) {
   const rows = []
-  for (let i = 0; i < programList.length; i += 4)
-    rows.push(programList.slice(i, i + 4))
+  for (let i = 0; i < programList.length; i += 1)
+    rows.push(programList.slice(i, i + 1))
 
   return rows
 }
@@ -24,8 +24,8 @@ function programRows(programList: Array<Program>) {
     }"
   >
     <a-row v-for="(row, i) in programRows(programList)" :key="i" :gutter="30" :style="{ marginBottom: '20px' }">
-      <a-col v-for="p in row" :key="p.id" :span="6">
-        <ProgramCard :program="{ name: p.Name, description: p.Description, category: p.Category, cover: p.Cover }" />
+      <a-col v-for="p in row" :key="p.Name" :span="24">
+        <ProgramInfoCard :program="{ id: p.id as number, name: p.Name, category: p.Category, description: p.Description }" />
       </a-col>
     </a-row>
   </div>

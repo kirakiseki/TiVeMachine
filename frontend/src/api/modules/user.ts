@@ -25,3 +25,27 @@ export function getUserInfo() {
 export function getMenuList() {
   return axios.post<RouteRecordNormalized[]>('/api/user/menu')
 }
+
+export interface SetSexReq {
+  sex: number
+}
+
+export function setSex(data: SetSexReq) {
+  return axios.post('/api/user/setSex', data)
+}
+
+export interface SetAvatarReq {
+  avatar: string
+}
+
+export function setAvatar(data: SetAvatarReq) {
+  return axios.post('/api/user/setAvatar', data)
+}
+
+export interface SetDescriptionReq {
+  description: string
+}
+
+export function setDescription(data: SetDescriptionReq) {
+  return axios.post('/api/user/setDescription', data)
+}

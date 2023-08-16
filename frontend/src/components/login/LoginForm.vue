@@ -36,7 +36,7 @@ async function handleSubmit({
     setLoading(true)
     try {
       await userStore.login(values as LoginData)
-      router.push('index')
+      router.push('/')
       Message.success('登录成功')
       const { rememberPassword } = loginConfig.value
       const { username, password } = values
@@ -97,13 +97,9 @@ function setRememberPassword(value: boolean) {
           >
             记住密码
           </a-checkbox>
-          <a-link>忘记密码</a-link>
         </div>
         <a-button type="primary" html-type="submit" long :loading="loading">
           登录
-        </a-button>
-        <a-button type="text" long class="login-form-register-btn">
-          注册账号
         </a-button>
       </a-space>
     </a-form>

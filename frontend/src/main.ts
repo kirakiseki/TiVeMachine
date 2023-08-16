@@ -7,7 +7,6 @@ import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import setupLoginGuard from './router/setup/loginGuard'
-import setupPermissionGuard from './router/setup/permissonGuard'
 import pinia from './store'
 import '~/api/middleware'
 
@@ -20,6 +19,5 @@ const router = createRouter({
 })
 
 setupLoginGuard(router)
-setupPermissionGuard(router)
 
 createApp(App).use(router).use(ArcoVue).use(ArcoVueIcon).use(pinia).mount('#app')

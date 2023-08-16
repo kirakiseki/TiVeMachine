@@ -42,5 +42,6 @@ export default function setupLoginGuard(router: Router) {
         } as LocationQueryRaw,
       })
     }
+    NProgress.done()
   })
 }
